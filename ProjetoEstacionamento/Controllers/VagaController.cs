@@ -3,14 +3,18 @@ using ProjetoEstacionamento.Dto.Vaga;
 using ProjetoEstacionamento.Services.Interfaces;
 using System.Net;
 
+
 namespace ProjetoEstacionamento.Controllers
 {
     [ApiController]
     [Route("api/v1/vaga")]
     public class VagaController : ControllerBase
     {
-        public VagaController()
+        protected readonly ILogger<VagaController> _logger;
+
+        public VagaController(ILogger<VagaController> logger)
         {
+            _logger = logger;
         }
 
         [HttpPost]
@@ -24,6 +28,8 @@ namespace ProjetoEstacionamento.Controllers
             }
             catch (Exception exception)
             {
+                _logger.LogWarning($"Algo inesperado ocorreu no cadastro das vagas: {exception.Message}");
+
                 return StatusCode((int)HttpStatusCode.InternalServerError,
                   new
                   {
@@ -42,6 +48,8 @@ namespace ProjetoEstacionamento.Controllers
             }
             catch (Exception exception)
             {
+                _logger.LogWarning($"Algo inesperado ocorreu na consulta: {exception.Message}");
+
                 return StatusCode((int)HttpStatusCode.InternalServerError,
                   new
                   {
@@ -63,7 +71,7 @@ namespace ProjetoEstacionamento.Controllers
                 return StatusCode((int)HttpStatusCode.InternalServerError,
                   new
                   {
-                      message = "Algo inesperado ocorreu",
+                      message = "Algo inesperado ocorreu na consulta restante",
                       detail = exception.Message
                   });
             }
@@ -81,7 +89,7 @@ namespace ProjetoEstacionamento.Controllers
                 return StatusCode((int)HttpStatusCode.InternalServerError,
                   new
                   {
-                      message = "Algo inesperado ocorreu",
+                      message = "Algo inesperado ocorreu na consulta todas vagas",
                       detail = exception.Message
                   });
             }
@@ -99,7 +107,7 @@ namespace ProjetoEstacionamento.Controllers
                 return StatusCode((int)HttpStatusCode.InternalServerError,
                   new
                   {
-                      message = "Algo inesperado ocorreu",
+                      message = "Algo inesperado ocorreu listagem de todos veículos",
                       detail = exception.Message
                   });
             }

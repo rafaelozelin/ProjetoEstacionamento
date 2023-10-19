@@ -11,10 +11,12 @@ namespace ProjetoEstacionamento.Controllers
     public class VeiculoController : ControllerBase
     {
         private readonly IVeiculoServiceFactory _veiculoServiceFactory;
+        protected readonly ILogger<VeiculoController> _logger;
 
-        public VeiculoController(IVeiculoServiceFactory veiculoServiceFactory)
+        public VeiculoController(IVeiculoServiceFactory veiculoServiceFactory, ILogger<VeiculoController> logger)
         {
             _veiculoServiceFactory = veiculoServiceFactory;
+            _logger = logger;
         }
 
         [HttpPost]
@@ -30,6 +32,8 @@ namespace ProjetoEstacionamento.Controllers
             }
             catch (Exception exception)
             {
+                _logger.LogWarning($"Algo inesperado ocorreu no cadastro do veículo: {exception.Message}");
+
                 return StatusCode((int)HttpStatusCode.InternalServerError,
                   new
                   {
@@ -53,6 +57,8 @@ namespace ProjetoEstacionamento.Controllers
             }
             catch (Exception exception)
             {
+                _logger.LogWarning($"Algo inesperado ocorreu na atualização do veículo: {exception.Message}");
+
                 return StatusCode((int)HttpStatusCode.InternalServerError,
                   new
                   {
@@ -73,6 +79,8 @@ namespace ProjetoEstacionamento.Controllers
             }
             catch (Exception exception)
             {
+                _logger.LogWarning($"Algo inesperado ocorreu na listagem de veiculos: {exception.Message}");
+
                 return StatusCode((int)HttpStatusCode.InternalServerError,
                   new
                   {
