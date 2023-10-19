@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using ProjetoEstacionamento.Dto;
 using ProjetoEstacionamento.Dto.Vaga;
 using ProjetoEstacionamento.Dto.Veiculo;
 using ProjetoEstacionamento.Entities;

@@ -33,7 +33,14 @@ builder.Services.AddScoped<IVeiculoService, MotoService>();
 builder.Services.AddScoped<IVagaService, VagaService>();
 
 builder.Services.AddSingleton<IVeiculoServiceFactory, VeiculoServiceFactory>();
-builder.Services.AddSingleton<Func<IEnumerable<IVeiculoService>>>(x => () => x.GetService<IEnumerable<IVeiculoService>>()!);
+
+//builder.Services.AddSingleton<Func<IEnumerable<IVeiculoService>>>(x => () => x.GetService<IEnumerable<IVeiculoService>>()!);
+
+builder.Services.AddSingleton<Func<IEnumerable<IVeiculoService>>>(
+    serviceProvider => () => serviceProvider
+                            .CreateScope()
+                            .ServiceProvider
+                            .GetService<IEnumerable<IVeiculoService>>()!);
 
 var mapperConfig = MapperConfig.GetMapperConfig();
 IMapper mapper = mapperConfig.CreateMapper();

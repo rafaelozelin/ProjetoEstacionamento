@@ -2,30 +2,41 @@
 using Microsoft.EntityFrameworkCore;
 using ProjetoEstacionamento.Entities;
 using ProjetoEstacionamento.Contexts;
+using ProjetoEstacionamento.Enums;
 
 namespace ProjetoEstacionamento.Repositories
 {
     public class VagaRepository : IVagaRepository
     {
         private readonly DataContext _context;
-        private readonly IMapper _mapper;
 
-        public VagaRepository(DataContext context, IMapper mapper)
+        public VagaRepository(DataContext context)
         {
             _context = context;
-            _mapper = mapper;
         }
 
         public async Task Cadastrar(List<Vaga> vagas)
         {
             _context.Vagas.AddRange(vagas);
-            await _context.SaveChangesAsync(); 
+            await _context.SaveChangesAsync();
         }
 
         public async Task<List<Vaga>> Consultar()
         {
             var vagas = await _context.Vagas
                 .Include(v => v.Veiculos)
+                .AsNoTracking()
+                .ToListAsync();
+
+            return vagas;
+        }
+
+        public async Task<List<Vaga>> ConsultarPorTipos(List<ETipoVaga> tipoVagas)
+        {
+            var vagas = await _context.Vagas
+                .Include(v => v.Veiculos)
+                .Where(v => tipoVagas.Contains(v.TipoVaga))
+                .AsNoTracking()
                 .ToListAsync();
 
             return vagas;

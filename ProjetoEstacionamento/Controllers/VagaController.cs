@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using ProjetoEstacionamento.Dto.Vaga;
 using ProjetoEstacionamento.Services;
+using System.Net;
 
 namespace ProjetoEstacionamento.Controllers
 {
@@ -17,27 +18,75 @@ namespace ProjetoEstacionamento.Controllers
         [HttpPost]
         public async Task<IActionResult> Cadastrar([FromServices] IVagaService vagaService, [FromBody] List<VagaRequest> vagaRequest)
         {
-           await vagaService.Cadastrar(vagaRequest);
+            try
+            {
+                await vagaService.Cadastrar(vagaRequest);
 
-            return NoContent();
+                return Ok();
+            }
+            catch (Exception exception)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError,
+                  new
+                  {
+                      message = "Algo inesperado ocorreu",
+                      detail = exception.Message
+                  });
+            }
         }
 
         [HttpGet("consulta-detalhada")]
         public async Task<IActionResult> Consultar([FromServices] IVagaService vagaService)
         {
-            return Ok(await vagaService.Consultar());
+            try
+            {
+                return Ok(await vagaService.Consultar());
+            }
+            catch (Exception exception)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError,
+                  new
+                  {
+                      message = "Algo inesperado ocorreu",
+                      detail = exception.Message
+                  });
+            }
         }
 
         [HttpGet("consultar-vagas-restantes")]
         public async Task<IActionResult> ConsultarVagasRestantes([FromServices] IVagaService vagaService)
         {
-            return Ok(await vagaService.ConsultarVagasRestantes());
+            try
+            {
+                return Ok(await vagaService.ConsultarVagasRestantes());
+            }
+            catch (Exception exception)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError,
+                  new
+                  {
+                      message = "Algo inesperado ocorreu",
+                      detail = exception.Message
+                  });
+            }
         }
 
-        [HttpGet("consultar-vagas-restante")]
+        [HttpGet("consultar-total-vagas")]
         public async Task<IActionResult> ConsultarTotalVagas([FromServices] IVagaService vagaService)
         {
-            return Ok(await vagaService.ConsultarTotalVagas());
+            try
+            {
+                return Ok(await vagaService.ConsultarTotalVagas());
+            }
+            catch (Exception exception)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError,
+                  new
+                  {
+                      message = "Algo inesperado ocorreu",
+                      detail = exception.Message
+                  });
+            }
         }
     }
 }

@@ -1,8 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ProjetoEstacionamento.Dto.Veiculo;
-using ProjetoEstacionamento.Enums;
 using ProjetoEstacionamento.Factories;
-using ProjetoEstacionamento.Services;
+using System.Net;
 
 namespace ProjetoEstacionamento.Controllers
 {
@@ -20,11 +19,46 @@ namespace ProjetoEstacionamento.Controllers
         [HttpPost]
         public async Task<IActionResult> Cadastrar([FromBody] VeiculoRequest veiculoRequest)
         {
-            var servico = _veiculoServiceFactory.Create(veiculoRequest.TipoVeiculo);
+            try
+            {
+                var servico = _veiculoServiceFactory.Create(veiculoRequest.TipoVeiculo);
 
-            await servico.CadastrarAsync(veiculoRequest);
+                await servico.CadastrarAsync(veiculoRequest);
 
-            return NoContent();
+                return Ok();
+            }
+            catch (Exception exception)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError,
+                  new
+                  {
+                      message = "Algo inesperado ocorreu",
+                      detail = exception.Message
+                  });
+            }
+            
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update([FromBody] VeiculoRequest veiculoRequest, int id)
+        {
+            try
+            {
+                var servico = _veiculoServiceFactory.Create(veiculoRequest.TipoVeiculo);
+
+                await servico.AtualizarAsync(veiculoRequest, id);
+
+                return Ok();
+            }
+            catch (Exception exception)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError,
+                  new
+                  {
+                      message = "Algo inesperado ocorreu",
+                      detail = exception.Message
+                  });
+            }
         }
     }
 }

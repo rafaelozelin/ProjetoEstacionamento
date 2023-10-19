@@ -20,7 +20,7 @@ namespace ProjetoEstacionamento.Factories
         {
             var service = _collectionService().FirstOrDefault(c => c.TipoVeiculo == tipoVeiculo);
 
-            return service ?? throw new Exception("não encontramos esse tipo");
+            return service ?? throw new Exception("Não encontramos esse tipo de veículo");
         }
     }
 }

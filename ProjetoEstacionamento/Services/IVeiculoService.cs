@@ -7,5 +7,6 @@ namespace ProjetoEstacionamento.Services
     {
         public ETipoVeiculo TipoVeiculo { get; }
         Task CadastrarAsync(VeiculoRequest veiculoRequest);
+        Task AtualizarAsync(VeiculoRequest veiculoRequest, int id);
     }
 }
