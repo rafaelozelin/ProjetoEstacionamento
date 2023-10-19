@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using ProjetoEstacionamento.Entities;
 using ProjetoEstacionamento.Contexts;
 using ProjetoEstacionamento.Enums;
+using ProjetoEstacionamento.Repositories.Interfaces;
 
 namespace ProjetoEstacionamento.Repositories
 {
@@ -31,7 +32,7 @@ namespace ProjetoEstacionamento.Repositories
             return vagas;
         }
 
-        public async Task<List<Vaga>> ConsultarPorTipos(List<ETipoVaga> tipoVagas)
+        public async Task<List<Vaga>> ConsultarPorTipos(List<TipoVaga> tipoVagas)
         {
             var vagas = await _context.Vagas
                 .Include(v => v.Veiculos)

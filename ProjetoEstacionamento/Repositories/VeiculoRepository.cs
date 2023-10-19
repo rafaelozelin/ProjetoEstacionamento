@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ProjetoEstacionamento.Contexts;
 using ProjetoEstacionamento.Entities;
+using ProjetoEstacionamento.Enums;
+using ProjetoEstacionamento.Repositories.Interfaces;
 
 namespace ProjetoEstacionamento.Repositories
 {
@@ -31,6 +33,14 @@ namespace ProjetoEstacionamento.Repositories
         {
             var veiculos = await _context.Veiculos
                 .Where(c => c.Entrada == entrada).ToListAsync();
+
+            return veiculos;
+        }
+
+        public async Task<List<Veiculo>> GetByTipo(TipoVeiculo tipoVeiculo)
+        {
+            var veiculos = await _context.Veiculos
+                .Where(c => c.TipoVeiculo == tipoVeiculo).ToListAsync();
 
             return veiculos;
         }

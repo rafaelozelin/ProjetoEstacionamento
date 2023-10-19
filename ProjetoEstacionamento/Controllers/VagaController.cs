@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using ProjetoEstacionamento.Dto.Vaga;
-using ProjetoEstacionamento.Services;
+using ProjetoEstacionamento.Services.Interfaces;
 using System.Net;
 
 namespace ProjetoEstacionamento.Controllers

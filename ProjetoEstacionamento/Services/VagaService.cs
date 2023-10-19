@@ -3,7 +3,8 @@ using ProjetoEstacionamento.Dto.Vaga;
 using ProjetoEstacionamento.Entities;
 using ProjetoEstacionamento.Enums;
 using ProjetoEstacionamento.Extensions;
-using ProjetoEstacionamento.Repositories;
+using ProjetoEstacionamento.Repositories.Interfaces;
+using ProjetoEstacionamento.Services.Interfaces;
 
 namespace ProjetoEstacionamento.Services
 {
@@ -32,15 +33,17 @@ namespace ProjetoEstacionamento.Services
             var result = new VagaResponse
             {
                 TotalVagas = vagas.Sum(v => v.Quantidade),
-                TotalVagasRestante = VerificarVagasRestante(vagas),
+                TotalVagasRestante = VerificarVagasRestante(vagas),               
                 VagasDetalhada = vagas.Select(vaga => new VagasDetalhada
                 {
                     TipoVaga = vaga.TipoVaga.GetDescription(),
                     QuantidadeTotal = vaga.Quantidade,
                     QuantidadeRestante = vaga.Quantidade - vaga.Veiculos.Where(ve => ve.Saida is null).Count(),
-                    StatusEstacionamento = VerificarStatus(vaga).GetDescription()
+                    Status = VerificarStatus(vaga).GetDescription()
                 }).ToList()
-            }; 
+            };
+
+            result.StatusEstacionamento = VerificarStatusEstacionamento(result.TotalVagas, result.TotalVagasRestante).GetDescription();
 
             return result;
         }
@@ -64,17 +67,27 @@ namespace ProjetoEstacionamento.Services
             return vagas.Sum(v => v.Quantidade) - vagas.SelectMany(va => va.Veiculos.Where(ve => ve.Saida is null)).Count();
         }
 
-        private static EStatusEstacionamento VerificarStatus(Vaga vaga)
+        private static StatusEstacionamento VerificarStatusEstacionamento(int total, int restante)
+        {
+            if (total == restante)
+                return StatusEstacionamento.Vazio;
+            else if (restante == 0)
+                return StatusEstacionamento.Cheio;
+
+            return StatusEstacionamento.HaVagas;
+        }
+
+        private static StatusEstacionamento VerificarStatus(Vaga vaga)
         {
             var quantidadeRestante = vaga.Veiculos.Where(ve => ve.Saida is null).Count();
             var quantidadeTotal = vaga.Quantidade;
 
             if (quantidadeTotal == quantidadeRestante)
-                return EStatusEstacionamento.Vazio;
+                return StatusEstacionamento.Cheio;
             else if (quantidadeRestante == 0)
-                return EStatusEstacionamento.Cheio;
+                return StatusEstacionamento.Vazio;
 
-            return EStatusEstacionamento.HaVagas;
+            return StatusEstacionamento.HaVagas;
         }
     }
 }

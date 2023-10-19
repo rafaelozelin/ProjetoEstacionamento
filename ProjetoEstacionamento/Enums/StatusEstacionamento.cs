@@ -3,7 +3,7 @@ using System.Runtime.Serialization;
 
 namespace ProjetoEstacionamento.Enums
 {
-    public enum EStatusEstacionamento
+    public enum StatusEstacionamento
     {
         [EnumMember]
         [Description("Cheio")]

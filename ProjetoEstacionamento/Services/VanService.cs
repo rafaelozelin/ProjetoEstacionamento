@@ -2,7 +2,8 @@
 using ProjetoEstacionamento.Dto.Veiculo;
 using ProjetoEstacionamento.Entities;
 using ProjetoEstacionamento.Enums;
-using ProjetoEstacionamento.Repositories;
+using ProjetoEstacionamento.Repositories.Interfaces;
+using ProjetoEstacionamento.Services.Interfaces;
 
 namespace ProjetoEstacionamento.Services
 {
@@ -12,7 +13,7 @@ namespace ProjetoEstacionamento.Services
         private readonly IVagaRepository _vagaRepository;
         private readonly IMapper _mapper;
 
-        public ETipoVeiculo TipoVeiculo => ETipoVeiculo.Van;
+        public TipoVeiculo TipoVeiculo => TipoVeiculo.Van;
 
         public VanService(IVeiculoRepository veiculoRepository, IVagaRepository vagaRepository, IMapper mapper)
         {
@@ -25,7 +26,7 @@ namespace ProjetoEstacionamento.Services
         {
             var i = 0;
             var dataEntrada = DateTime.Now;
-            var tipoVagas = new List<ETipoVaga>() { ETipoVaga.Carro, ETipoVaga.Grande };
+            var tipoVagas = new List<TipoVaga>() { TipoVaga.Carro, TipoVaga.Grande };
 
             var vagas = await _vagaRepository.ConsultarPorTipos(tipoVagas);
 
@@ -65,12 +66,19 @@ namespace ProjetoEstacionamento.Services
             }
         }
 
+        public async Task<List<VeiculoResponse>> ListarAsync()
+        {
+            var veicuilos = await _veiculoRepository.GetByTipo(TipoVeiculo.Van);
+
+            return veicuilos.Select(c => _mapper.Map<VeiculoResponse>(c)).ToList();
+        }
+
         private Veiculo MontarVeiculo(VeiculoRequest veiculoRequest, int idVaga, DateTime dataEntrada)
         {
             var veiculo = _mapper.Map<Veiculo>(veiculoRequest);
 
             veiculo.Entrada = dataEntrada;
-            veiculo.TipoVeiculo = ETipoVeiculo.Van;
+            veiculo.TipoVeiculo = TipoVeiculo.Van;
             veiculo.IdVaga = idVaga;
 
             return veiculo;
@@ -78,7 +86,7 @@ namespace ProjetoEstacionamento.Services
 
         private static (bool, int, int) VerificaVagas(List<Vaga> vagas)
         {
-            var tipoVagas = new List<ETipoVaga>() { ETipoVaga.Grande, ETipoVaga.Carro };
+            var tipoVagas = new List<TipoVaga>() { TipoVaga.Grande, TipoVaga.Carro };
             var temVaga = false;
             var quantidadeVagas = 0;
             var idVaga = 0;
@@ -90,7 +98,7 @@ namespace ProjetoEstacionamento.Services
                 var totalVagas = vagaEspecifica.Quantidade;
                 var vagasEmUso = vagaEspecifica.Veiculos.Where(ve => ve.Saida is null).Count();
 
-                if (vagasEmUso < totalVagas && vagaEspecifica.TipoVaga == ETipoVaga.Grande)
+                if (vagasEmUso < totalVagas && vagaEspecifica.TipoVaga == TipoVaga.Grande)
                 {
                     temVaga = true;
                     idVaga = vagaEspecifica.Id;
@@ -98,7 +106,7 @@ namespace ProjetoEstacionamento.Services
                     break;
                 }
 
-                if (((totalVagas - vagasEmUso) / 3) >= 1 && vagaEspecifica.TipoVaga == ETipoVaga.Carro)
+                if (((totalVagas - vagasEmUso) / 3) >= 1 && vagaEspecifica.TipoVaga == TipoVaga.Carro)
                 {
                     temVaga = true;
                     idVaga = vagaEspecifica.Id;

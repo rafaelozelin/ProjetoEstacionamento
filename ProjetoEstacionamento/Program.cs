@@ -6,6 +6,8 @@ using ProjetoEstacionamento.Profiles;
 using ProjetoEstacionamento.Repositories;
 using ProjetoEstacionamento.Services;
 using System.Text.Json.Serialization;
+using ProjetoEstacionamento.Services.Interfaces;
+using ProjetoEstacionamento.Repositories.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 

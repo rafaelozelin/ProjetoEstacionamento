@@ -6,6 +6,6 @@ namespace ProjetoEstacionamento.Dto.Vaga
     {
         public int Id { get; set; }
         public int Quantidade { get; set; }
-        public ETipoVaga TipoVaga { get; set; } 
+        public TipoVaga TipoVaga { get; set; } 
     }
 }

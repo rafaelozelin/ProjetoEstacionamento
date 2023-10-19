@@ -3,7 +3,7 @@ using System.Runtime.Serialization;
 
 namespace ProjetoEstacionamento.Enums
 {
-    public enum ETipoVaga
+    public enum TipoVaga
     {
         [EnumMember]
         [Description("Moto")]

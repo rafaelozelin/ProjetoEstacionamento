@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ProjetoEstacionamento.Dto.Veiculo;
+using ProjetoEstacionamento.Enums;
 using ProjetoEstacionamento.Factories;
 using System.Net;
 
@@ -40,7 +41,7 @@ namespace ProjetoEstacionamento.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update([FromBody] VeiculoRequest veiculoRequest, int id)
+        public async Task<IActionResult> Atualizar([FromBody] VeiculoRequest veiculoRequest, int id)
         {
             try
             {
@@ -49,6 +50,26 @@ namespace ProjetoEstacionamento.Controllers
                 await servico.AtualizarAsync(veiculoRequest, id);
 
                 return Ok();
+            }
+            catch (Exception exception)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError,
+                  new
+                  {
+                      message = "Algo inesperado ocorreu",
+                      detail = exception.Message
+                  });
+            }
+        }
+
+        [HttpGet("listar/{tipoVeiculo}")]
+        public async Task<IActionResult> ListarVeiculos(TipoVeiculo tipoVeiculo)
+        {
+            try
+            {
+                var servico = _veiculoServiceFactory.Create(tipoVeiculo);
+
+                return Ok(await servico.ListarAsync());
             }
             catch (Exception exception)
             {

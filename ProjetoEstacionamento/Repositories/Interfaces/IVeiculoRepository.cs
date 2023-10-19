@@ -1,6 +1,7 @@
 ﻿using ProjetoEstacionamento.Entities;
+using ProjetoEstacionamento.Enums;
 
-namespace ProjetoEstacionamento.Repositories
+namespace ProjetoEstacionamento.Repositories.Interfaces
 {
     public interface IVeiculoRepository
     {
@@ -8,5 +9,6 @@ namespace ProjetoEstacionamento.Repositories
         public Task<Veiculo> GetById(int id);
         public Task AtulizarVeiculoAsync(Veiculo veiculo);
         public Task<List<Veiculo>> GetByEntrada(DateTime entrada);
+        public Task<List<Veiculo>> GetByTipo(TipoVeiculo tipoVeiculo);
     }
 }

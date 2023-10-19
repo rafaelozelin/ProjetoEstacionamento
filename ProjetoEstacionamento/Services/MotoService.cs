@@ -2,7 +2,8 @@
 using ProjetoEstacionamento.Dto.Veiculo;
 using ProjetoEstacionamento.Entities;
 using ProjetoEstacionamento.Enums;
-using ProjetoEstacionamento.Repositories;
+using ProjetoEstacionamento.Repositories.Interfaces;
+using ProjetoEstacionamento.Services.Interfaces;
 
 namespace ProjetoEstacionamento.Services
 {
@@ -12,7 +13,7 @@ namespace ProjetoEstacionamento.Services
         private readonly IVagaRepository _vagaRepository;
         private readonly IMapper _mapper;
 
-        public ETipoVeiculo TipoVeiculo => ETipoVeiculo.Moto;
+        public TipoVeiculo TipoVeiculo => TipoVeiculo.Moto;
 
         public MotoService(IVeiculoRepository veiculoRepository, IVagaRepository vagaRepository, IMapper mapper)
         {
@@ -23,7 +24,7 @@ namespace ProjetoEstacionamento.Services
 
         public async Task CadastrarAsync(VeiculoRequest veiculoRequest)
         {
-            var tipoVagas = new List<ETipoVaga>() { ETipoVaga.Moto, ETipoVaga.Carro, ETipoVaga.Grande };
+            var tipoVagas = new List<TipoVaga>() { TipoVaga.Moto, TipoVaga.Carro, TipoVaga.Grande };
 
             var vagas = await _vagaRepository.ConsultarPorTipos(tipoVagas);
 
@@ -56,12 +57,19 @@ namespace ProjetoEstacionamento.Services
             await _veiculoRepository.AtulizarVeiculoAsync(veiculo);
         }
 
+        public async Task<List<VeiculoResponse>> ListarAsync()
+        {
+            var veicuilos = await _veiculoRepository.GetByTipo(TipoVeiculo.Moto);
+
+            return veicuilos.Select(c => _mapper.Map<VeiculoResponse>(c)).ToList();
+        }
+
         private Veiculo MontarVeiculo(VeiculoRequest veiculoRequest, int idVaga)
         {
             var veiculo = _mapper.Map<Veiculo>(veiculoRequest);
 
             veiculo.Entrada = DateTime.Now;
-            veiculo.TipoVeiculo = ETipoVeiculo.Moto;
+            veiculo.TipoVeiculo = TipoVeiculo.Moto;
             veiculo.IdVaga = idVaga;
 
             return veiculo;
@@ -69,7 +77,7 @@ namespace ProjetoEstacionamento.Services
 
         private static (bool, int) VerificaVagas(List<Vaga> vagas)
         {
-            var tipoVagas = new List<ETipoVaga>() { ETipoVaga.Moto, ETipoVaga.Carro, ETipoVaga.Grande };
+            var tipoVagas = new List<TipoVaga>() { TipoVaga.Moto, TipoVaga.Carro, TipoVaga.Grande };
             var temVaga = false;
             var idVaga = 0;
 

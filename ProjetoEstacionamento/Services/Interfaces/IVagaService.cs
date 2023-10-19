@@ -1,6 +1,6 @@
 ﻿using ProjetoEstacionamento.Dto.Vaga;
 
-namespace ProjetoEstacionamento.Services
+namespace ProjetoEstacionamento.Services.Interfaces
 {
     public interface IVagaService
     {

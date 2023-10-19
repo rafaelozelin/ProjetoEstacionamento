@@ -6,6 +6,6 @@ namespace ProjetoEstacionamento.Dto.Veiculo
     {
         public int Id { get; set; }
         public string Placa { get; set; }
-        public ETipoVeiculo TipoVeiculo { get; set; }
+        public TipoVeiculo TipoVeiculo { get; set; }
     }
 }
