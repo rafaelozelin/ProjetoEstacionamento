@@ -1,8 +1,7 @@
 ﻿using AutoMapper;
-using ProjetoEstacionamento.Dto;
-using ProjetoEstacionamento.Dto.Vaga;
 using ProjetoEstacionamento.Dto.Veiculo;
 using ProjetoEstacionamento.Entities;
+using ProjetoEstacionamento.Extensions;
 
 namespace ProjetoEstacionamento.Profiles
 {
@@ -11,7 +10,8 @@ namespace ProjetoEstacionamento.Profiles
         public VeiculoProfile()
         {
             CreateMap<Veiculo, VeiculoRequest>();
-            CreateMap<Veiculo, VeiculoResponse>();
+            CreateMap<Veiculo, VeiculoResponse>()
+                .ForMember(dto => dto.TipoVeiculo, opts => opts.MapFrom(domain => domain.TipoVeiculo.GetDescription()));
 
             CreateMap<VeiculoRequest, Veiculo>();
             CreateMap<VeiculoResponse, Veiculo>();
