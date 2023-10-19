@@ -1,6 +1,4 @@
-﻿using Azure;
-using Microsoft.AspNetCore.Cors.Infrastructure;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using ProjetoEstacionamento.Dto.Vaga;
 using ProjetoEstacionamento.Services.Interfaces;
 using System.Net;
@@ -77,6 +75,24 @@ namespace ProjetoEstacionamento.Controllers
             try
             {
                 return Ok(await vagaService.ConsultarTotalVagas());
+            }
+            catch (Exception exception)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError,
+                  new
+                  {
+                      message = "Algo inesperado ocorreu",
+                      detail = exception.Message
+                  });
+            }
+        }
+
+        [HttpGet("listar-todos-veiculos")]
+        public async Task<IActionResult> ListarVeiculos([FromServices] IVagaService vagaService)
+        {
+            try
+            {
+                return Ok(await vagaService.ListarVeiculos());
             }
             catch (Exception exception)
             {

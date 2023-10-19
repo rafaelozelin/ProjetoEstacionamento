@@ -23,7 +23,11 @@ namespace ProjetoEstacionamento.Contexts
 
             builder.Entity<Vaga>()
                 .Property(va => va.TipoVaga)
-                .HasColumnName("tipo_vaga"); 
+                .HasColumnName("tipo_vaga");
+
+            builder.Entity<Vaga>(entity => {
+                entity.HasIndex(e => e.TipoVaga).IsUnique();
+            });
 
             builder.Entity<Vaga>()
                .Property(va => va.CreatedAt)

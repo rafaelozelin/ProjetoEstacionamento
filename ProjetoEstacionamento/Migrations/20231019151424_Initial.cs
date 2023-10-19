@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ProjetoEstacionamento.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialMigration : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -50,6 +50,12 @@ namespace ProjetoEstacionamento.Migrations
                         principalTable: "VAGA",
                         principalColumn: "id");
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_VAGA_tipo_vaga",
+                table: "VAGA",
+                column: "tipo_vaga",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_VEICULO_id_vaga",

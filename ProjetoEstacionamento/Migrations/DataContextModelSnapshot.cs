@@ -49,6 +49,9 @@ namespace ProjetoEstacionamento.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("TipoVaga")
+                        .IsUnique();
+
                     b.ToTable("VAGA", (string)null);
                 });
 

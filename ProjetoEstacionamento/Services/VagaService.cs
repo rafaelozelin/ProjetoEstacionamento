@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ProjetoEstacionamento.Dto.Vaga;
+using ProjetoEstacionamento.Dto.Veiculo;
 using ProjetoEstacionamento.Entities;
 using ProjetoEstacionamento.Enums;
 using ProjetoEstacionamento.Extensions;
@@ -61,6 +62,21 @@ namespace ProjetoEstacionamento.Services
 
             return vagas.Sum(v => v.Quantidade);
         }
+
+        public async Task<List<VagaVeiculoResponse>> ListarVeiculos()
+        {
+            var vagasVeiculos = await _vagaRepository.Consultar();
+
+            var result = vagasVeiculos.Select(vaga => new VagaVeiculoResponse()
+            {
+                TipoVaga = vaga.TipoVaga.GetDescription(),
+                Quantidade = vaga.Quantidade,
+                Veiculos = vaga.Veiculos.Select(c => _mapper.Map<VeiculoResponse>(c)).ToList()
+            }).ToList();
+
+            return result;
+        }
+        
 
         private static int VerificarVagasRestante(List<Vaga> vagas)
         {

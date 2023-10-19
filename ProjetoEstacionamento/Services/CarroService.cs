@@ -59,9 +59,9 @@ namespace ProjetoEstacionamento.Services
 
         public async Task<List<VeiculoResponse>> ListarAsync()
         {
-            var veicuilos = await _veiculoRepository.GetByTipo(TipoVeiculo.Carro);
+            var veiculos = await _veiculoRepository.GetByTipo(TipoVeiculo.Carro);
 
-            return veicuilos.Select(c => _mapper.Map<VeiculoResponse>(c)).ToList();
+            return veiculos.Select(c => _mapper.Map<VeiculoResponse>(c)).ToList();
         }
 
         private Veiculo MontarVeiculo(VeiculoRequest veiculoRequest, int idVaga)

@@ -12,8 +12,8 @@ using ProjetoEstacionamento.Contexts;
 namespace ProjetoEstacionamento.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20231018054855_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20231019151424_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -51,6 +51,9 @@ namespace ProjetoEstacionamento.Migrations
                         .HasColumnName("updated_at");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("TipoVaga")
+                        .IsUnique();
 
                     b.ToTable("VAGA", (string)null);
                 });

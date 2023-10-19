@@ -41,6 +41,6 @@ namespace ProjetoEstacionamento.Repositories
                 .ToListAsync();
 
             return vagas;
-        }
+        } 
     }
 }

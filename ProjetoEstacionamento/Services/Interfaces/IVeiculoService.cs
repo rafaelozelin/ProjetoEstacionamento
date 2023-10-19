@@ -8,6 +8,6 @@ namespace ProjetoEstacionamento.Services.Interfaces
         public TipoVeiculo TipoVeiculo { get; }
         Task CadastrarAsync(VeiculoRequest veiculoRequest);
         Task AtualizarAsync(VeiculoRequest veiculoRequest, int id);
-        Task<List<VeiculoResponse>> ListarAsync();
+        Task<List<VeiculoResponse>> ListarAsync(); 
     }
 }

@@ -8,5 +8,6 @@ namespace ProjetoEstacionamento.Services.Interfaces
         public Task<VagaResponse> Consultar();
         public Task<int> ConsultarVagasRestantes();
         public Task<int> ConsultarTotalVagas();
+        public Task<List<VagaVeiculoResponse>> ListarVeiculos();
     }
 }
